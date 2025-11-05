@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+//import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 
 // Importa tus componentes/páginas
 import Home from './pages/Home'; // Si existe
