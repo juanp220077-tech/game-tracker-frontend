@@ -2,6 +2,29 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
+
+// C:\GameTracker-Proyecto-Final\frontend\client\package.json
+{
+  "name": "client",
+  "version": "0.1.0",
+
+  // 1. Añade tu URL de homepage (CRÍTICO)
+  // Reemplaza <TU_USUARIO> y <NOMBRE_REPO_FRONTEND>
+  "homepage": "https://github.com/juanp220077-tech/game-tracker-frontend.git", 
+
+  "private": true,
+
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+
+    // 2. Añade los scripts de despliegue
+    "predeploy": "npm run build", 
+    "deploy": "gh-pages -d build" 
+  },
+  // ...
+}
+
   "dependencies": {
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
@@ -37,5 +60,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "gh-pages": "^6.3.0"
   }
 }
