@@ -1,130 +1,88 @@
 import React from 'react';
-import { Link } from 'react-router-dom'; // ¡Importar Link para la navegación!
+import { useNavigate } from 'react-router-dom'; // Importa useNavigate
 
-// Este componente debe recibir el objeto 'game' y la función 'onDelete' de la BibliotecaJuegos
-const TarjetaJuego = ({ game, onDelete }) => {
-    // Función de ayuda para obtener la URL de la portada (si no hay, usa un placeholder)
-    const getCoverUrl = () => {
-        // Usa la URL guardada, o un placeholder si está vacía
-        return game.coverUrl || 'https://via.placeholder.com/300x400?text=Sin+Portada';
+// Recibe 'game' y 'onDelete' como props. 'handleEdit' ya no es necesario.
+const TarjetaJuego = ({ game, onDelete }) => { 
+    const navigate = useNavigate(); // Inicializa el hook de navegación
+
+    // Estilos internos (ejemplo)
+    const cardStyle = {
+        // ... (otros estilos de tarjeta)
+        border: '1px solid #444',
+        borderRadius: '8px',
+        overflow: 'hidden',
+        backgroundColor: '#222',
+        color: 'white',
+        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+        textAlign: 'center'
+    };
+    
+    const imageStyle = {
+        width: '100%',
+        height: '250px', 
+        objectFit: 'cover', 
+        borderBottom: '1px solid #444'
+    };
+
+    const editButtonStyle = {
+        backgroundColor: '#ffc107', // Amarillo
+        color: 'black',
+        padding: '8px',
+        margin: '5px',
+        border: 'none',
+        borderRadius: '4px',
+        cursor: 'pointer',
+        width: 'calc(100% - 10px)'
+    };
+    
+    const deleteButtonStyle = {
+        backgroundColor: '#dc3545', // Rojo
+        color: 'white',
+        padding: '8px',
+        margin: '5px',
+        border: 'none',
+        borderRadius: '4px',
+        cursor: 'pointer',
+        width: 'calc(100% - 10px)'
+    };
+
+    const handleEditClick = () => {
+        // Usa navigate para redirigir al formulario de edición con el ID del juego
+        // La ruta en App.js debe ser '/editar-juego/:id'
+        navigate(`/editar-juego/${game._id}`); 
     };
 
     return (
         <div style={cardStyle}>
-            {/* Imagen de Portada */}
+            {/* Imagen de Portada (Placeholder si no hay URL) */}
             <img 
-                src={getCoverUrl()} 
+                src={game.coverUrl || 'placeholder-default-url.jpg'} 
                 alt={`Portada de ${game.title}`} 
-                style={coverStyle} 
+                style={imageStyle} 
             />
             
-            <div style={contentStyle}>
-                {/* Título y Detalles */}
+            <div style={{ padding: '15px' }}>
                 <h3>{game.title}</h3>
                 <p><strong>Género:</strong> {game.genre || 'N/A'}</p>
                 <p><strong>Plataforma:</strong> {game.platform || 'N/A'}</p>
-                <p><strong>Estado:</strong> <span style={{ color: statusColor[game.status] }}>{game.status}</span></p>
+                <p><strong>Estado:</strong> {game.status}</p>
                 <p><strong>Horas:</strong> {game.hoursPlayed} h</p>
-                <p><strong>Puntuación:</strong> 
-                    <span style={{ color: '#FFD700' }}>
-                        {'★'.repeat(game.rating)}
-                    </span>
-                    /5
-                </p>
+                <p><strong>Puntuación:</strong> {'⭐'.repeat(game.rating) || 'N/A'}/5</p>
 
-                {/* --- SECCIÓN DE BOTONES (Navegación y CRUD) --- */}
-                <div style={buttonGroupStyle}>
-                    
-                    {/* Botón 1: Ver Detalles y Reseñas (READ/CREATE/DELETE de Reseñas) */}
-                    <Link to={`/juegos/${game._id}`} style={{ ...buttonBaseStyle, ...detailsButtonStyle }}>
-                        Detalles / Reseñas
-                    </Link>
-
-                    {/* Botón 2: Editar Juego (UPDATE) */}
-                    {/* Navega a la ruta configurada en App.jsx: /editar/:id */}
-                    <Link to={`/editar/${game._id}`} style={{ ...buttonBaseStyle, ...editButtonStyle }}>
-                        Editar
-                    </Link>
-                    
-                    {/* Botón 3: Eliminar Juego (DELETE) */}
-                    <button 
-                        onClick={() => onDelete(game._id)} // Ejecuta la función pasada por prop
-                        style={{ ...buttonBaseStyle, ...deleteButtonStyle }}
-                    >
-                        Eliminar
-                    </button>
-                </div>
+                {/* Botones de Acción */}
+                
+                {/* 1. Botón Editar Corregido: Usa la navegación */}
+                <button onClick={handleEditClick} style={editButtonStyle}>
+                    Editar
+                </button>
+                
+                {/* 2. Botón Eliminar: Usa la prop onDelete */}
+                <button onClick={() => onDelete(game._id)} style={deleteButtonStyle}>
+                    Eliminar
+                </button>
             </div>
         </div>
     );
-};
-
-// --- Estilos ---
-const cardStyle = {
-    border: '1px solid #444',
-    borderRadius: '8px',
-    overflow: 'hidden',
-    backgroundColor: '#333',
-    color: 'white',
-    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.4)',
-    display: 'flex',
-    flexDirection: 'column',
-    height: '100%',
-};
-
-const coverStyle = {
-    width: '100%',
-    height: '250px', // Altura fija para portadas
-    objectFit: 'cover',
-    borderBottom: '1px solid #444'
-};
-
-const contentStyle = {
-    padding: '15px',
-    flexGrow: 1, // Permite que el contenido se estire
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between'
-};
-
-const buttonGroupStyle = {
-    marginTop: '15px',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '8px'
-};
-
-const buttonBaseStyle = {
-    padding: '8px 10px',
-    borderRadius: '4px',
-    cursor: 'pointer',
-    textAlign: 'center',
-    textDecoration: 'none',
-    fontWeight: 'bold'
-};
-
-const detailsButtonStyle = {
-    backgroundColor: '#007bff',
-    color: 'white',
-    border: 'none',
-};
-
-const editButtonStyle = {
-    backgroundColor: '#ffc107',
-    color: '#333',
-    border: 'none',
-};
-
-const deleteButtonStyle = {
-    backgroundColor: '#dc3545',
-    color: 'white',
-    border: 'none',
-};
-
-const statusColor = {
-    'Pendiente': '#6c757d',
-    'Jugando': '#17a2b8',
-    'Completado': '#28a745'
 };
 
 export default TarjetaJuego;
