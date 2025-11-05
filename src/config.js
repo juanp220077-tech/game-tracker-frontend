@@ -8,4 +8,4 @@
 
 // Si la URL de tu Backend es: https://gametracker-api-xyz.onrender.com
 // La API Base URL debe incluir '/api' al final.
-export const API_BASE_URL = 'https://game-tracker-frontend.onrender.com/';
+export const API_BASE_URL = 'https://game-tracker-frontend.onrender.com/api';
